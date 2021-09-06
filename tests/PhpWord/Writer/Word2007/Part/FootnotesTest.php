@@ -10,11 +10,10 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -25,7 +24,7 @@ use PhpOffice\PhpWord\TestHelperDOCX;
  * @coversNothing
  * @runTestsInSeparateProcesses
  */
-class FootnotesTest extends \PHPUnit\Framework\TestCase
+class FootnotesTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {

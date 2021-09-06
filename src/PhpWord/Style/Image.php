@@ -10,11 +10,10 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Style;
 
 /**
@@ -61,9 +60,9 @@ class Image extends Frame
     public function __construct()
     {
         parent::__construct();
-        $this->setUnit(self::UNIT_PT);
+        $this->setUnit('px');
 
-        // Backward compatibility setting
+        // Backward compatilibity setting
         // @todo Remove on 1.0.0
         $this->setWrap(self::WRAPPING_STYLE_INLINE);
         $this->setHPos(self::POSITION_HORIZONTAL_LEFT);

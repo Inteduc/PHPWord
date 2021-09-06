@@ -10,19 +10,14 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
-use PhpOffice\PhpWord\ComplexType\FootnoteProperties;
-use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\SimpleType\Jc;
-use PhpOffice\PhpWord\SimpleType\NumberFormat;
-use PhpOffice\PhpWord\Style\Cell;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\TestHelperDOCX;
 
@@ -31,7 +26,7 @@ use PhpOffice\PhpWord\TestHelperDOCX;
  *
  * @runTestsInSeparateProcesses
  */
-class DocumentTest extends \PHPUnit\Framework\TestCase
+class DocumentTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Executed before each method of the class
@@ -39,32 +34,6 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
     public function tearDown()
     {
         TestHelperDOCX::clear();
-    }
-
-    /**
-     * Write custom properties
-     */
-    public function testWriteCustomProps()
-    {
-        $phpWord = new PhpWord();
-        $docInfo = $phpWord->getDocInfo();
-
-        $docInfo->setCustomProperty('key1', null);
-        $docInfo->setCustomProperty('key2', true);
-        $docInfo->setCustomProperty('key3', 3);
-        $docInfo->setCustomProperty('key4', 4.4);
-        $docInfo->setCustomProperty('key5', 'value5');
-        $docInfo->setCustomProperty('key6', new \DateTime());
-        $docInfo->setCustomProperty('key7', time(), DocInfo::PROPERTY_TYPE_DATE);
-
-        $doc = TestHelperDOCX::getDocument($phpWord);
-        $this->assertNotNull($doc);
-
-//         $this->assertTrue($doc->elementExists('/Properties/property[name="key1"]/vt:lpwstr'));
-//         $this->assertTrue($doc->elementExists('/Properties/property[name="key2"]/vt:bool'));
-//         $this->assertTrue($doc->elementExists('/Properties/property[name="key3"]/vt:i4'));
-//         $this->assertTrue($doc->elementExists('/Properties/property[name="key4"]/vt:r8'));
-//         $this->assertTrue($doc->elementExists('/Properties/property[name="key5"]/vt:lpwstr'));
     }
 
     /**
@@ -86,36 +55,6 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
         $element = $doc->getElement('/w:document/w:body/w:sectPr/w:pgNumType');
 
         $this->assertEquals(2, $element->getAttribute('w:start'));
-    }
-
-    /**
-     * Write section footnote properties
-     */
-    public function testSectionFootnoteProperties()
-    {
-        $properties = new FootnoteProperties();
-        $properties->setPos(FootnoteProperties::POSITION_DOC_END);
-        $properties->setNumFmt(NumberFormat::LOWER_ROMAN);
-        $properties->setNumStart(1);
-        $properties->setNumRestart(FootnoteProperties::RESTART_NUMBER_EACH_PAGE);
-
-        $phpWord = new PhpWord();
-        $section = $phpWord->addSection();
-        $section->setFootnoteProperties($properties);
-
-        $doc = TestHelperDOCX::getDocument($phpWord);
-
-        $element = $doc->getElement('/w:document/w:body/w:sectPr/w:footnotePr/w:pos');
-        $this->assertEquals(FootnoteProperties::POSITION_DOC_END, $element->getAttribute('w:val'));
-
-        $element = $doc->getElement('/w:document/w:body/w:sectPr/w:footnotePr/w:numFmt');
-        $this->assertEquals(NumberFormat::LOWER_ROMAN, $element->getAttribute('w:val'));
-
-        $element = $doc->getElement('/w:document/w:body/w:sectPr/w:footnotePr/w:numStart');
-        $this->assertEquals(1, $element->getAttribute('w:val'));
-
-        $element = $doc->getElement('/w:document/w:body/w:sectPr/w:footnotePr/w:numRestart');
-        $this->assertEquals(FootnoteProperties::RESTART_NUMBER_EACH_PAGE, $element->getAttribute('w:val'));
     }
 
     /**
@@ -487,7 +426,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
         // Test the attributes
         $attributeCount = 0;
         foreach ($attributes as $key => $value) {
-            ++$attributeCount;
+            $attributeCount++;
             $nodeName = ($key == 'alignment') ? 'jc' : $key;
             $path = "/w:document/w:body/w:p[{$attributeCount}]/w:pPr/w:{$nodeName}";
             if ('alignment' != $key) {
@@ -535,25 +474,6 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Tests that if no color is set on a cell a border gets writen with the default color
-     */
-    public function testWriteDefaultColor()
-    {
-        $phpWord = new PhpWord();
-        $section = $phpWord->addSection();
-
-        $cStyles['borderTopSize'] = 120;
-
-        $table = $section->addTable();
-        $table->addRow();
-        $cell = $table->addCell(null, $cStyles);
-        $cell->addText('Test');
-
-        $doc = TestHelperDOCX::getDocument($phpWord);
-        $this->assertEquals(Cell::DEFAULT_BORDER_COLOR, $doc->getElementAttribute('/w:document/w:body/w:tbl/w:tr/w:tc/w:tcPr/w:tcBorders/w:top', 'w:color'));
-    }
-
-    /**
      * covers ::_writeTableStyle
      */
     public function testWriteTableStyle()
@@ -586,7 +506,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
 
         $section = $phpWord->addSection();
         $table = $section->addTable($tStyles);
-        $table->setWidth(100);
+        $table->setWidth = 100;
         $table->addRow($rHeight, $rStyles);
         $cell = $table->addCell($cWidth, $cStyles);
         $cell->addText('Test');

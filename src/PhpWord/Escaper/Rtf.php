@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -19,34 +19,27 @@ namespace PhpOffice\PhpWord\Escaper;
 
 /**
  * @since 0.13.0
- *
+ * 
  * @codeCoverageIgnore
  */
 class Rtf extends AbstractEscaper
 {
     protected function escapeAsciiCharacter($code)
     {
-        if ($code == 9) {
-            return '{\\tab}';
+        if (20 > $code || $code >= 80) {
+            return '{\u' . $code . '}';
+        } else {
+            return chr($code);
         }
-        if (0x20 > $code || $code >= 0x80) {
-            return '{\\u' . $code . '}';
-        }
-        if ($code == 123 || $code == 125 || $code == 92) { // open or close brace or backslash
-            return '\\' . chr($code);
-        }
-
-        return chr($code);
     }
 
     protected function escapeMultibyteCharacter($code)
     {
-        return '\\uc0{\\u' . $code . '}';
+        return '\uc0{\u' . $code . '}';
     }
 
     /**
      * @see http://www.randomchaos.com/documents/?source=php_and_unicode
-     * @param string $input
      */
     protected function escapeSingleValue($input)
     {
@@ -64,9 +57,9 @@ class Rtf extends AbstractEscaper
                 if (0 == count($bytes)) {
                     if ($asciiCode < 224) {
                         $numberOfBytes = 2;
-                    } elseif ($asciiCode < 240) {
+                    } else if ($asciiCode < 240) {
                         $numberOfBytes = 3;
-                    } elseif ($asciiCode < 248) {
+                    } else if ($asciiCode < 248) {
                         $numberOfBytes = 4;
                     }
                 }

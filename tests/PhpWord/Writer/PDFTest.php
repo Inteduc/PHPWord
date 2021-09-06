@@ -10,11 +10,10 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -25,7 +24,7 @@ use PhpOffice\PhpWord\Settings;
  *
  * @runTestsInSeparateProcesses
  */
-class PDFTest extends \PHPUnit\Framework\TestCase
+class PDFTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test normal construct
@@ -41,7 +40,7 @@ class PDFTest extends \PHPUnit\Framework\TestCase
         $writer = new PDF(new PhpWord());
         $writer->save($file);
 
-        $this->assertFileExists($file);
+        $this->assertTrue(file_exists($file));
 
         unlink($file);
     }

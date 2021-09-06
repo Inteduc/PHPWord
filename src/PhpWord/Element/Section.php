@@ -10,14 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\ComplexType\FootnoteProperties;
 use PhpOffice\PhpWord\Style\Section as SectionStyle;
 
 class Section extends AbstractContainer
@@ -49,32 +48,24 @@ class Section extends AbstractContainer
     private $footers = array();
 
     /**
-     * The properties for the footnote of this section
-     *
-     * @var FootnoteProperties
-     */
-    private $footnoteProperties;
-
-    /**
      * Create new instance
      *
      * @param int $sectionCount
-     * @param null|array|\PhpOffice\PhpWord\Style $style
+     * @param array $style
      */
     public function __construct($sectionCount, $style = null)
     {
         $this->sectionId = $sectionCount;
         $this->setDocPart($this->container, $this->sectionId);
-        if (null === $style) {
-            $style = new SectionStyle();
-        }
-        $this->style = $this->setNewStyle(new SectionStyle(), $style);
+        $this->style = new SectionStyle();
+        $this->setStyle($style);
     }
 
     /**
      * Set section style.
      *
      * @param array $style
+     * @return void
      */
     public function setStyle($style = null)
     {
@@ -87,6 +78,8 @@ class Section extends AbstractContainer
      * Get section style
      *
      * @return \PhpOffice\PhpWord\Style\Section
+     *
+     * @codeCoverageIgnore
      */
     public function getStyle()
     {
@@ -125,6 +118,8 @@ class Section extends AbstractContainer
      * Get header elements
      *
      * @return Header[]
+     *
+     * @codeCoverageIgnore
      */
     public function getHeaders()
     {
@@ -135,44 +130,12 @@ class Section extends AbstractContainer
      * Get footer elements
      *
      * @return Footer[]
+     *
+     * @codeCoverageIgnore
      */
     public function getFooters()
     {
         return $this->footers;
-    }
-
-    /**
-     * Get the footnote properties
-     *
-     * @return FootnoteProperties
-     */
-    public function getFootnoteProperties()
-    {
-        return $this->footnoteProperties;
-    }
-
-    /**
-     * Get the footnote properties
-     *
-     * @deprecated Use the `getFootnoteProperties` method instead
-     *
-     * @return FootnoteProperties
-     *
-     * @codeCoverageIgnore
-     */
-    public function getFootnotePropoperties()
-    {
-        return $this->footnoteProperties;
-    }
-
-    /**
-     * Set the footnote properties
-     *
-     * @param FootnoteProperties $footnoteProperties
-     */
-    public function setFootnoteProperties(FootnoteProperties $footnoteProperties = null)
-    {
-        $this->footnoteProperties = $footnoteProperties;
     }
 
     /**
@@ -181,7 +144,7 @@ class Section extends AbstractContainer
      * If any of the Header instances have a type of Header::FIRST then this method returns true.
      * False otherwise.
      *
-     * @return bool
+     * @return boolean
      */
     public function hasDifferentFirstPage()
     {
@@ -190,12 +153,6 @@ class Section extends AbstractContainer
                 return true;
             }
         }
-        foreach ($this->footers as $footer) {
-            if ($footer->getType() == Header::FIRST) {
-                return true;
-            }
-        }
-
         return false;
     }
 
@@ -205,11 +162,11 @@ class Section extends AbstractContainer
      * @since 0.10.0
      *
      * @param string $type
-     * @param bool $header
-     *
-     * @throws \Exception
+     * @param boolean $header
      *
      * @return Header|Footer
+     *
+     * @throws \Exception
      */
     private function addHeaderFooter($type = Header::AUTO, $header = true)
     {
@@ -225,10 +182,11 @@ class Section extends AbstractContainer
             $container->setPhpWord($this->phpWord);
 
             $collection[$index] = $container;
-
             return $container;
+        } else {
+            throw new \Exception('Invalid header/footer type.');
         }
-        throw new \Exception('Invalid header/footer type.');
+
     }
 
     /**
@@ -300,8 +258,8 @@ class Section extends AbstractContainer
     {
         if (empty($this->footers)) {
             return null;
+        } else {
+            return $this->footers[1];
         }
-
-        return $this->footers[1];
     }
 }

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -24,7 +24,7 @@ use PhpOffice\PhpWord\Element\Image;
  *
  * @runTestsInSeparateProcesses
  */
-class MediaTest extends AbstractWebServerEmbeddedTest
+class MediaTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Get section media elements
@@ -32,22 +32,6 @@ class MediaTest extends AbstractWebServerEmbeddedTest
     public function testGetSectionMediaElementsWithNull()
     {
         $this->assertEquals(array(), Media::getElements('section'));
-    }
-
-    /**
-     * Get header media elements
-     */
-    public function testGetHeaderMediaElementsWithNull()
-    {
-        $this->assertEquals(array(), Media::getElements('header'));
-    }
-
-    /**
-     * Get footer media elements
-     */
-    public function testGetFooterMediaElementsWithNull()
-    {
-        $this->assertEquals(array(), Media::getElements('footer'));
     }
 
     /**
@@ -65,7 +49,7 @@ class MediaTest extends AbstractWebServerEmbeddedTest
     {
         $local = __DIR__ . '/_files/images/mars.jpg';
         $object = __DIR__ . '/_files/documents/sheet.xls';
-        $remote = self::getRemoteImageUrl();
+        $remote = 'http://php.net/images/logos/php-med-trans-light.gif';
         Media::addElement('section', 'image', $local, new Image($local));
         Media::addElement('section', 'image', $local, new Image($local));
         Media::addElement('section', 'image', $remote, new Image($local));
@@ -93,7 +77,7 @@ class MediaTest extends AbstractWebServerEmbeddedTest
     public function testAddHeaderMediaElement()
     {
         $local = __DIR__ . '/_files/images/mars.jpg';
-        $remote = self::getRemoteImageUrl();
+        $remote = 'http://php.net/images/logos/php-med-trans-light.gif';
         Media::addElement('header1', 'image', $local, new Image($local));
         Media::addElement('header1', 'image', $local, new Image($local));
         Media::addElement('header1', 'image', $remote, new Image($remote));
@@ -108,7 +92,7 @@ class MediaTest extends AbstractWebServerEmbeddedTest
     public function testAddFooterMediaElement()
     {
         $local = __DIR__ . '/_files/images/mars.jpg';
-        $remote = self::getRemoteImageUrl();
+        $remote = 'http://php.net/images/logos/php-med-trans-light.gif';
         Media::addElement('footer1', 'image', $local, new Image($local));
         Media::addElement('footer1', 'image', $local, new Image($local));
         Media::addElement('footer1', 'image', $remote, new Image($remote));
@@ -122,7 +106,7 @@ class MediaTest extends AbstractWebServerEmbeddedTest
     /**
      * Add image element exception
      *
-     * @expectedException \Exception
+     * @expectedException Exception
      * @expectedExceptionMessage Image object not assigned.
      */
     public function testAddElementImageException()

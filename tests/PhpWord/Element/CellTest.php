@@ -10,21 +10,19 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Element;
-
-use PhpOffice\PhpWord\AbstractWebServerEmbeddedTest;
 
 /**
  * Test class for PhpOffice\PhpWord\Element\Cell
  *
  * @runTestsInSeparateProcesses
  */
-class CellTest extends AbstractWebServerEmbeddedTest
+class CellTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * New instance
@@ -167,7 +165,7 @@ class CellTest extends AbstractWebServerEmbeddedTest
     public function testAddImageSectionByUrl()
     {
         $oCell = new Cell();
-        $element = $oCell->addImage(self::getRemoteGifImageUrl());
+        $element = $oCell->addImage('http://php.net/images/logos/php-med-trans-light.gif');
 
         $this->assertCount(1, $oCell->getElements());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Image', $element);
@@ -183,7 +181,7 @@ class CellTest extends AbstractWebServerEmbeddedTest
         $element = $oCell->addObject($src);
 
         $this->assertCount(1, $oCell->getElements());
-        $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\OLEObject', $element);
+        $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Object', $element);
     }
 
     /**
@@ -233,7 +231,7 @@ class CellTest extends AbstractWebServerEmbeddedTest
     public function testAddPreserveTextException()
     {
         $oCell = new Cell();
-        $oCell->setDocPart('TextRun', 1);
+        $oCell->setDocPart('Section', 1);
         $oCell->addPreserveText('text');
     }
 

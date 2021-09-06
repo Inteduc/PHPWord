@@ -10,14 +10,12 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Writer;
 
-use PhpOffice\PhpWord\AbstractWebServerEmbeddedTest;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\TestHelperDOCX;
@@ -27,7 +25,7 @@ use PhpOffice\PhpWord\TestHelperDOCX;
  *
  * @runTestsInSeparateProcesses
  */
-class Word2007Test extends AbstractWebServerEmbeddedTest
+class Word2007Test extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tear down after each test
@@ -76,7 +74,7 @@ class Word2007Test extends AbstractWebServerEmbeddedTest
     public function testSave()
     {
         $localImage = __DIR__ . '/../_files/images/earth.jpg';
-        $remoteImage = self::getRemoteGifImageUrl();
+        $remoteImage = 'http://php.net//images/logos/php-med-trans-light.gif';
         $phpWord = new PhpWord();
         $phpWord->addFontStyle('Font', array('size' => 11));
         $phpWord->addParagraphStyle('Paragraph', array('alignment' => Jc::CENTER));
@@ -98,7 +96,7 @@ class Word2007Test extends AbstractWebServerEmbeddedTest
         $file = __DIR__ . '/../_files/temp.docx';
         $writer->save($file);
 
-        $this->assertFileExists($file);
+        $this->assertTrue(file_exists($file));
 
         unlink($file);
     }
@@ -119,7 +117,7 @@ class Word2007Test extends AbstractWebServerEmbeddedTest
         $file = __DIR__ . '/../_files/temp.docx';
         $writer->save($file);
 
-        $this->assertFileExists($file);
+        $this->assertTrue(file_exists($file));
 
         unlink($file);
     }
@@ -168,8 +166,6 @@ class Word2007Test extends AbstractWebServerEmbeddedTest
      */
     public function testSetGetUseDiskCaching()
     {
-        $this->setOutputCallback(function () {
-        });
         $phpWord = new PhpWord();
         $phpWord->addSection();
         $object = new Word2007($phpWord);
@@ -187,7 +183,7 @@ class Word2007Test extends AbstractWebServerEmbeddedTest
      */
     public function testSetUseDiskCachingException()
     {
-        $dir = implode(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
+        $dir = join(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
 
         $object = new Word2007();
         $object->setUseDiskCaching(true, $dir);

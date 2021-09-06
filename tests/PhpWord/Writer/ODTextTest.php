@@ -10,11 +10,10 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
-
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -25,7 +24,7 @@ use PhpOffice\PhpWord\SimpleType\Jc;
  *
  * @runTestsInSeparateProcesses
  */
-class ODTextTest extends \PHPUnit\Framework\TestCase
+class ODTextTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Construct
@@ -91,7 +90,7 @@ class ODTextTest extends \PHPUnit\Framework\TestCase
         $writer = new ODText($phpWord);
         $writer->save($file);
 
-        $this->assertFileExists($file);
+        $this->assertTrue(file_exists($file));
 
         unlink($file);
     }
@@ -103,14 +102,11 @@ class ODTextTest extends \PHPUnit\Framework\TestCase
      */
     public function testSavePhpOutput()
     {
-        $this->setOutputCallback(function () {
-        });
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
         $section->addText('Test');
         $writer = new ODText($phpWord);
         $writer->save('php://output');
-        $this->assertNotNull($this->getActualOutput());
     }
 
     /**
@@ -140,7 +136,7 @@ class ODTextTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetUseDiskCachingException()
     {
-        $dir = implode(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
+        $dir = join(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
 
         $object = new ODText();
         $object->setUseDiskCaching(true, $dir);

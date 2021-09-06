@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,9 +43,9 @@ class Media
      * @param string $source
      * @param \PhpOffice\PhpWord\Element\Image $image
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return integer
      *
-     * @return int
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     public static function addElement($container, $mediaType, $source, Image $image = null)
     {
@@ -83,10 +83,12 @@ class Media
                     $image->setTarget($target);
                     $image->setMediaIndex($mediaTypeCount);
                     break;
+
                 // Objects
                 case 'object':
                     $target = "{$container}_oleObject{$mediaTypeCount}.bin";
                     break;
+
                 // Links
                 case 'link':
                     $target = $source;
@@ -98,17 +100,15 @@ class Media
             $mediaData['type'] = $mediaType;
             $mediaData['rID'] = $rId;
             self::$elements[$container][$mediaId] = $mediaData;
-
             return $rId;
+        } else {
+            $mediaData = self::$elements[$container][$mediaId];
+            if (!is_null($image)) {
+                $image->setTarget($mediaData['target']);
+                $image->setMediaIndex($mediaData['mediaIndex']);
+            }
+            return $mediaData['rID'];
         }
-
-        $mediaData = self::$elements[$container][$mediaId];
-        if (!is_null($image)) {
-            $image->setTarget($mediaData['target']);
-            $image->setMediaIndex($mediaData['mediaIndex']);
-        }
-
-        return $mediaData['rID'];
     }
 
     /**
@@ -116,7 +116,7 @@ class Media
      *
      * @param string $container section|headerx|footerx|footnote|endnote
      * @param string $mediaType image|object|link
-     * @return int
+     * @return integer
      * @since 0.10.0
      */
     public static function countElements($container, $mediaType = null)
@@ -157,15 +157,13 @@ class Media
                     $elements[$key] = $val;
                 }
             }
-
             return $elements;
+        } else {
+            if (!isset(self::$elements[$container])) {
+                return $elements;
+            }
+            return self::getElementsByType($container, $type);
         }
-
-        if (!isset(self::$elements[$container])) {
-            return $elements;
-        }
-
-        return self::getElementsByType($container, $type);
     }
 
     /**
@@ -210,7 +208,7 @@ class Media
      * @param  string $type
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -226,7 +224,7 @@ class Media
      *
      * @param string $linkSrc
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -258,7 +256,7 @@ class Media
      *
      * @param string $key
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -272,11 +270,11 @@ class Media
      *
      * @deprecated 0.10.0
      *
-     * @param  int $headerCount
+     * @param  integer $headerCount
      * @param  string $src
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -292,7 +290,7 @@ class Media
      *
      * @param string $key
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -320,11 +318,11 @@ class Media
      *
      * @deprecated 0.10.0
      *
-     * @param  int $footerCount
+     * @param  integer $footerCount
      * @param  string $src
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */
@@ -340,7 +338,7 @@ class Media
      *
      * @param string $key
      *
-     * @return int
+     * @return integer
      *
      * @codeCoverageIgnore
      */

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PhpWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PhpWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -83,17 +83,15 @@ abstract class AbstractRenderer extends HTML
     public function __construct(PhpWord $phpWord)
     {
         parent::__construct($phpWord);
-        if ($this->includeFile != null) {
-            $includeFile = Settings::getPdfRendererPath() . '/' . $this->includeFile;
-            if (file_exists($includeFile)) {
-                /** @noinspection PhpIncludeInspection Dynamic includes */
-                require_once $includeFile;
-            } else {
-                // @codeCoverageIgnoreStart
-                // Can't find any test case. Uncomment when found.
-                throw new Exception('Unable to load PDF Rendering library');
-                // @codeCoverageIgnoreEnd
-            }
+        $includeFile = Settings::getPdfRendererPath() . '/' . $this->includeFile;
+        if (file_exists($includeFile)) {
+            /** @noinspection PhpIncludeInspection Dynamic includes */
+            require_once $includeFile;
+        } else {
+            // @codeCoverageIgnoreStart
+            // Can't find any test case. Uncomment when found.
+            throw new Exception('Unable to load PDF Rendering library');
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -143,7 +141,6 @@ abstract class AbstractRenderer extends HTML
     public function setPaperSize($value = 9)
     {
         $this->paperSize = $value;
-
         return $this;
     }
 
@@ -166,7 +163,6 @@ abstract class AbstractRenderer extends HTML
     public function setOrientation($value = 'default')
     {
         $this->orientation = $value;
-
         return $this;
     }
 
@@ -175,8 +171,9 @@ abstract class AbstractRenderer extends HTML
      *
      * @param string $filename Name of the file to save as
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @return resource
+     *
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     protected function prepareForSave($filename = null)
     {
@@ -196,6 +193,8 @@ abstract class AbstractRenderer extends HTML
      * Save PhpWord to PDF file, post-save
      *
      * @param resource $fileHandle
+     *
+     * @return void
      *
      * @throws Exception
      */

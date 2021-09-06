@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,36 +25,37 @@ use PhpOffice\PhpWord\Settings;
  * @coversDefaultClass \PhpOffice\PhpWord\Shared\ZipArchive
  * @runTestsInSeparateProcesses
  */
-class ZipArchiveTest extends \PHPUnit\Framework\TestCase
+class ZipArchiveTest extends \PHPUnit_Framework_TestCase
 {
-//     /**
-//      * Test close method exception: Working in local, not working in Travis
-//      *
-//      * expectedException \PhpOffice\PhpWord\Exception\Exception
-//      * expectedExceptionMessage Could not close zip file
-//      * covers ::close
-//      */
-//     public function testCloseException()
-//     {
-//         $zipFile = __DIR__ . "/../_files/documents/ziptest.zip";
 
-//         $object = new ZipArchive();
-//         $object->open($zipFile, ZipArchive::CREATE);
-//         $object->addFromString('content/string.txt', 'Test');
+    /**
+     * Test close method exception: Working in local, not working in Travis
+     *
+     * expectedException \PhpOffice\PhpWord\Exception\Exception
+     * expectedExceptionMessage Could not close zip file
+     * covers ::close
+     */
+    public function testCloseException()
+    {
+        // $zipFile = __DIR__ . "/../_files/documents/ziptest.zip";
 
-//         // Lock the file
-//         $resource = fopen($zipFile, "w");
-//         flock($resource, LOCK_EX);
+        // $object = new ZipArchive();
+        // $object->open($zipFile, ZipArchive::CREATE);
+        // $object->addFromString('content/string.txt', 'Test');
 
-//         // Closing the file should throws an exception
-//         $object->close();
+        // // Lock the file
+        // $resource = fopen($zipFile, "w");
+        // flock($resource, LOCK_EX);
 
-//         // Unlock the file
-//         flock($resource, LOCK_UN);
-//         fclose($resource);
+        // // Closing the file should throws an exception
+        // $object->close();
 
-//         @unlink($zipFile);
-//     }
+        // // Unlock the file
+        // flock($resource, LOCK_UN);
+        // fclose($resource);
+
+        // @unlink($zipFile);
+    }
 
     /**
      * Test all methods

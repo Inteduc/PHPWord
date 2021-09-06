@@ -10,12 +10,14 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\ODText\Element;
+
+use PhpOffice\PhpWord\Settings;
 
 /**
  * Title element writer
@@ -36,44 +38,12 @@ class Title extends AbstractElement
         }
 
         $xmlWriter->startElement('text:h');
-        $hdname = 'HD';
-        $sect = $element->getParent();
-        if ($sect instanceof \PhpOffice\PhpWord\Element\Section) {
-            if (self::compareToFirstElement($element, $sect->getElements())) {
-                $hdname = 'HE';
-            }
-        }
-        $depth = $element->getDepth();
-        $xmlWriter->writeAttribute('text:style-name', "$hdname$depth");
-        $xmlWriter->writeAttribute('text:outline-level', $depth);
-        $xmlWriter->startElement('text:span');
-        if ($depth > 0) {
-            $xmlWriter->writeAttribute('text:style-name', 'Heading_' . $depth);
+        $xmlWriter->writeAttribute('text:outline-level', $element->getDepth());
+        if (Settings::isOutputEscapingEnabled()) {
+            $xmlWriter->text($element->getText());
         } else {
-            $xmlWriter->writeAttribute('text:style-name', 'Title');
+            $xmlWriter->writeRaw($element->getText());
         }
-        $text = $element->getText();
-        if (is_string($text)) {
-            $this->writeText($text);
-        } elseif ($text instanceof \PhpOffice\PhpWord\Element\AbstractContainer) {
-            $containerWriter = new Container($xmlWriter, $text);
-            $containerWriter->write();
-        }
-        $xmlWriter->endElement(); // text:span
         $xmlWriter->endElement(); // text:h
-    }
-
-    /**
-     * Test if element is same as first element in array
-     *
-     * @param \PhpOffice\PhpWord\Element\AbstractElement $elem
-     *
-     * @param \PhpOffice\PhpWord\Element\AbstractElement[] $elemarray
-     *
-     * @return bool
-     */
-    private static function compareToFirstElement($elem, $elemarray)
-    {
-        return $elem === $elemarray[0];
     }
 }

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,7 +26,7 @@ use PhpOffice\PhpWord\TestHelperDOCX;
  *
  * @runTestsInSeparateProcesses
  */
-class FontTest extends \PHPUnit\Framework\TestCase
+class FontTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tear down after each test
@@ -45,7 +45,7 @@ class FontTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('text', $object->getStyleType());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', $object->getParagraphStyle());
-        $this->assertInternalType('array', $object->getStyleValues());
+        $this->assertTrue(is_array($object->getStyleValues()));
     }
 
     /**
@@ -69,14 +69,11 @@ class FontTest extends \PHPUnit\Framework\TestCase
             'doubleStrikethrough' => false,
             'smallCaps'           => false,
             'allCaps'             => false,
-            'rtl'                 => false,
             'fgColor'             => null,
             'bgColor'             => null,
             'scale'               => null,
             'spacing'             => null,
             'kerning'             => null,
-            'lang'                => null,
-            'hidden'              => false,
         );
         foreach ($attributes as $key => $default) {
             $get = is_bool($default) ? "is{$key}" : "get{$key}";
@@ -115,10 +112,6 @@ class FontTest extends \PHPUnit\Framework\TestCase
             'scale'               => 150,
             'spacing'             => 240,
             'kerning'             => 10,
-            'rtl'                 => true,
-            'noProof'             => true,
-            'lang'                => new Language(Language::EN_US),
-            'hidden'              => true,
         );
         $object->setStyleByArray($attributes);
         foreach ($attributes as $key => $value) {
@@ -178,16 +171,5 @@ class FontTest extends \PHPUnit\Framework\TestCase
     {
         $object = new Font();
         $object->setLineHeight('a');
-    }
-
-    /**
-     * Test setting the language as a string
-     */
-    public function testSetLangAsString()
-    {
-        $object = new Font();
-        $object->setLang(Language::FR_BE);
-        $this->assertInstanceOf('PhpOffice\PhpWord\Style\Language', $object->getLang());
-        $this->assertEquals(Language::FR_BE, $object->getLang()->getLatin());
     }
 }

@@ -10,20 +10,19 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Style;
 
 use PhpOffice\PhpWord\SimpleType\Jc;
-use PhpOffice\PhpWord\SimpleType\NumberFormat;
 
 /**
  * Numbering level definition
  *
- * @see  http://www.schemacentral.com/sc/ooxml/e-w_lvl-1.html
+ * @link http://www.schemacentral.com/sc/ooxml/e-w_lvl-1.html
  * @since 0.10.0
  */
 class NumberingLevel extends AbstractStyle
@@ -31,31 +30,31 @@ class NumberingLevel extends AbstractStyle
     /**
      * Level number, 0 to 8 (total 9 levels)
      *
-     * @var int
+     * @var integer
      */
     private $level = 0;
 
     /**
      * Starting value w:start
      *
-     * @var int
-     * @see  http://www.schemacentral.com/sc/ooxml/e-w_start-1.html
+     * @var integer
+     * @link http://www.schemacentral.com/sc/ooxml/e-w_start-1.html
      */
     private $start = 1;
 
     /**
-     * Numbering format w:numFmt, one of PhpOffice\PhpWord\SimpleType\NumberFormat
+     * Numbering format bullet|decimal|upperRoman|lowerRoman|upperLetter|lowerLetter
      *
      * @var string
-     * @see  http://www.schemacentral.com/sc/ooxml/t-w_ST_NumberFormat.html
+     * @link http://www.schemacentral.com/sc/ooxml/t-w_ST_NumberFormat.html
      */
     private $format;
 
     /**
      * Restart numbering level symbol w:lvlRestart
      *
-     * @var int
-     * @see  http://www.schemacentral.com/sc/ooxml/e-w_lvlRestart-1.html
+     * @var integer
+     * @link http://www.schemacentral.com/sc/ooxml/e-w_lvlRestart-1.html
      */
     private $restart;
 
@@ -63,15 +62,15 @@ class NumberingLevel extends AbstractStyle
      * Related paragraph style
      *
      * @var string
-     * @see  http://www.schemacentral.com/sc/ooxml/e-w_pStyle-2.html
+     * @link http://www.schemacentral.com/sc/ooxml/e-w_pStyle-2.html
      */
     private $pStyle;
 
     /**
-     * Content between numbering symbol and paragraph text w:suff
+     * Content between numbering symbol and paragraph text
      *
      * @var string tab|space|nothing
-     * @see  http://www.schemacentral.com/sc/ooxml/e-w_suff-1.html
+     * @link http://www.schemacentral.com/sc/ooxml/e-w_suff-1.html
      */
     private $suffix = 'tab';
 
@@ -79,35 +78,33 @@ class NumberingLevel extends AbstractStyle
      * Numbering level text e.g. %1 for nonbullet or bullet character
      *
      * @var string
-     * @see  http://www.schemacentral.com/sc/ooxml/e-w_lvlText-1.html
+     * @link http://www.schemacentral.com/sc/ooxml/e-w_lvlText-1.html
      */
     private $text;
 
     /**
-     * Justification, w:lvlJc
-     *
-     * @var string, one of PhpOffice\PhpWord\SimpleType\Jc
+     * @var string
      */
     private $alignment = '';
 
     /**
      * Left
      *
-     * @var int
+     * @var integer
      */
     private $left;
 
     /**
      * Hanging
      *
-     * @var int
+     * @var integer
      */
     private $hanging;
 
     /**
      * Tab position
      *
-     * @var int
+     * @var integer
      */
     private $tabPos;
 
@@ -122,14 +119,14 @@ class NumberingLevel extends AbstractStyle
      * Hint default|eastAsia|cs
      *
      * @var string
-     * @see  http://www.schemacentral.com/sc/ooxml/a-w_hint-1.html
+     * @link http://www.schemacentral.com/sc/ooxml/a-w_hint-1.html
      */
     private $hint;
 
     /**
      * Get level
      *
-     * @return int
+     * @return integer
      */
     public function getLevel()
     {
@@ -139,20 +136,19 @@ class NumberingLevel extends AbstractStyle
     /**
      * Set level
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setLevel($value)
     {
         $this->level = $this->setIntVal($value, $this->level);
-
         return $this;
     }
 
     /**
      * Get start
      *
-     * @return int
+     * @return integer
      */
     public function getStart()
     {
@@ -162,13 +158,12 @@ class NumberingLevel extends AbstractStyle
     /**
      * Set start
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setStart($value)
     {
         $this->start = $this->setIntVal($value, $this->start);
-
         return $this;
     }
 
@@ -190,15 +185,15 @@ class NumberingLevel extends AbstractStyle
      */
     public function setFormat($value)
     {
-        $this->format = $this->setEnumVal($value, NumberFormat::values(), $this->format);
-
+        $enum = array('bullet', 'decimal', 'upperRoman', 'lowerRoman', 'upperLetter', 'lowerLetter');
+        $this->format = $this->setEnumVal($value, $enum, $this->format);
         return $this;
     }
 
     /**
-     * Get restart
+     * Get start
      *
-     * @return int
+     * @return integer
      */
     public function getRestart()
     {
@@ -206,15 +201,14 @@ class NumberingLevel extends AbstractStyle
     }
 
     /**
-     * Set restart
+     * Set start
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setRestart($value)
     {
         $this->restart = $this->setIntVal($value, $this->restart);
-
         return $this;
     }
 
@@ -237,7 +231,6 @@ class NumberingLevel extends AbstractStyle
     public function setPStyle($value)
     {
         $this->pStyle = $value;
-
         return $this;
     }
 
@@ -261,7 +254,6 @@ class NumberingLevel extends AbstractStyle
     {
         $enum = array('tab', 'space', 'nothing');
         $this->suffix = $this->setEnumVal($value, $enum, $this->suffix);
-
         return $this;
     }
 
@@ -284,7 +276,6 @@ class NumberingLevel extends AbstractStyle
     public function setText($value)
     {
         $this->text = $value;
-
         return $this;
     }
 
@@ -307,7 +298,7 @@ class NumberingLevel extends AbstractStyle
      */
     public function setAlignment($value)
     {
-        if (Jc::isValid($value)) {
+        if (Jc::getValidator()->isValid($value)) {
             $this->alignment = $value;
         }
 
@@ -343,7 +334,7 @@ class NumberingLevel extends AbstractStyle
     /**
      * Get left
      *
-     * @return int
+     * @return integer
      */
     public function getLeft()
     {
@@ -353,20 +344,19 @@ class NumberingLevel extends AbstractStyle
     /**
      * Set left
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setLeft($value)
     {
         $this->left = $this->setIntVal($value, $this->left);
-
         return $this;
     }
 
     /**
      * Get hanging
      *
-     * @return int
+     * @return integer
      */
     public function getHanging()
     {
@@ -376,20 +366,19 @@ class NumberingLevel extends AbstractStyle
     /**
      * Set hanging
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setHanging($value)
     {
         $this->hanging = $this->setIntVal($value, $this->hanging);
-
         return $this;
     }
 
     /**
      * Get tab
      *
-     * @return int
+     * @return integer
      */
     public function getTabPos()
     {
@@ -399,13 +388,12 @@ class NumberingLevel extends AbstractStyle
     /**
      * Set tab
      *
-     * @param int $value
+     * @param integer $value
      * @return self
      */
     public function setTabPos($value)
     {
         $this->tabPos = $this->setIntVal($value, $this->tabPos);
-
         return $this;
     }
 
@@ -428,7 +416,6 @@ class NumberingLevel extends AbstractStyle
     public function setFont($value)
     {
         $this->font = $value;
-
         return $this;
     }
 

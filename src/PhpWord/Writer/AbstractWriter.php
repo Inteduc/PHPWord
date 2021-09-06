@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @see         https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2018 PHPWord contributors
+ * @link        https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -96,15 +96,17 @@ abstract class AbstractWriter implements WriterInterface
     /**
      * Get PhpWord object
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @return \PhpOffice\PhpWord\PhpWord
+     *
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     public function getPhpWord()
     {
         if (!is_null($this->phpWord)) {
             return $this->phpWord;
+        } else {
+            throw new Exception("No PhpWord assigned.");
         }
-        throw new Exception('No PhpWord assigned.');
     }
 
     /**
@@ -116,7 +118,6 @@ abstract class AbstractWriter implements WriterInterface
     public function setPhpWord(PhpWord $phpWord = null)
     {
         $this->phpWord = $phpWord;
-
         return $this;
     }
 
@@ -130,9 +131,9 @@ abstract class AbstractWriter implements WriterInterface
     {
         if ($partName != '' && isset($this->writerParts[strtolower($partName)])) {
             return $this->writerParts[strtolower($partName)];
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     /**
@@ -151,8 +152,9 @@ abstract class AbstractWriter implements WriterInterface
      * @param bool $value
      * @param string $directory
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @return self
+     *
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     public function setUseDiskCaching($value = false, $directory = null)
     {
@@ -216,15 +218,15 @@ abstract class AbstractWriter implements WriterInterface
     protected function getTempFile($filename)
     {
         // Temporary directory
-        $this->setTempDir(Settings::getTempDir() . uniqid('/PHPWordWriter_', true) . '/');
+        $this->setTempDir(Settings::getTempDir() . '/PHPWordWriter/');
 
         // Temporary file
         $this->originalFilename = $filename;
-        if (strpos(strtolower($filename), 'php://') === 0) {
+        if (strtolower($filename) == 'php://output' || strtolower($filename) == 'php://stdout') {
             $filename = tempnam(Settings::getTempDir(), 'PhpWord');
             if (false === $filename) {
-                $filename = $this->originalFilename; // @codeCoverageIgnore
-            } // @codeCoverageIgnore
+                $filename = $this->originalFilename;
+            }
         }
         $this->tempFilename = $filename;
 
@@ -233,6 +235,8 @@ abstract class AbstractWriter implements WriterInterface
 
     /**
      * Cleanup temporary file.
+     *
+     * @return void
      *
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      */
@@ -253,6 +257,8 @@ abstract class AbstractWriter implements WriterInterface
 
     /**
      * Clear temporary directory.
+     *
+     * @return void
      */
     protected function clearTempDir()
     {
@@ -266,9 +272,9 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param string $filename
      *
-     * @throws \Exception
-     *
      * @return \PhpOffice\PhpWord\Shared\ZipArchive
+     *
+     * @throws \Exception
      */
     protected function getZipArchive($filename)
     {
@@ -299,9 +305,9 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param string $filename
      *
-     * @throws \Exception
-     *
      * @return resource
+     *
+     * @throws \Exception
      */
     protected function openFile($filename)
     {
@@ -324,6 +330,7 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param resource $fileHandle
      * @param string $content
+     * @return void
      */
     protected function writeFile($fileHandle, $content)
     {
@@ -337,6 +344,7 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param \PhpOffice\PhpWord\Shared\ZipArchive $zip
      * @param mixed $elements
+     * @return void
      */
     protected function addFilesToPackage(ZipArchive $zip, $elements)
     {
@@ -352,10 +360,6 @@ abstract class AbstractWriter implements WriterInterface
             // Retrive GD image content or get local media
             if (isset($element['isMemImage']) && $element['isMemImage']) {
                 $image = call_user_func($element['createFunction'], $element['source']);
-                if ($element['imageType'] === 'image/png') {
-                    // PNG images need to preserve alpha channel information
-                    imagesavealpha($image, true);
-                }
                 ob_start();
                 call_user_func($element['imageFunction'], $image);
                 $imageContents = ob_get_contents();
@@ -376,6 +380,7 @@ abstract class AbstractWriter implements WriterInterface
      * @param \PhpOffice\PhpWord\Shared\ZipArchive $zipPackage
      * @param string $source
      * @param string $target
+     * @return void
      */
     protected function addFileToPackage($zipPackage, $source, $target)
     {
@@ -385,7 +390,7 @@ abstract class AbstractWriter implements WriterInterface
             $source = substr($source, 6);
             list($zipFilename, $imageFilename) = explode('#', $source);
 
-            $zip = new ZipArchive();
+            $zip = new ZipArchive;
             if ($zip->open($zipFilename) !== false) {
                 if ($zip->locateName($imageFilename)) {
                     $zip->extractTo($this->getTempDir(), $imageFilename);
@@ -406,16 +411,17 @@ abstract class AbstractWriter implements WriterInterface
      * Delete directory.
      *
      * @param string $dir
+     * @return void
      */
     private function deleteDir($dir)
     {
         foreach (scandir($dir) as $file) {
             if ($file === '.' || $file === '..') {
                 continue;
-            } elseif (is_file($dir . '/' . $file)) {
-                unlink($dir . '/' . $file);
-            } elseif (is_dir($dir . '/' . $file)) {
-                $this->deleteDir($dir . '/' . $file);
+            } elseif (is_file($dir . "/" . $file)) {
+                unlink($dir . "/" . $file);
+            } elseif (is_dir($dir . "/" . $file)) {
+                $this->deleteDir($dir . "/" . $file);
             }
         }
 
